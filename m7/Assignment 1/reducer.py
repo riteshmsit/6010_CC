@@ -1,51 +1,29 @@
 #!/usr/bin/env python
-"""reducer.py"""
-from operator import itemgetter
 import sys
-import json
 import ast
 
-
-order = {"1":"1"}
-line_item={"1":"1"}
-
-def create(key, value):
-    if(key == 'order'):
-        order[str(value[1])] = value
-    else:
-        if value[1] not in line_item.keys():
-            line_item[str(value[1])] = [value]
-        else:
-            line_item[str(value[1])].append(value)
-            
-
-
-
-def final_list(order, line_item):
-    li = []
-    for i in line_item.keys():
-        for j in order.keys():
-            if i == j:
-                for _ in line_item[j]:
-                    li = []
-                    li.append(order[j])
-                    li.append(_)
-                    print li
-                    print "---------------"
-
-# input comes from STDIN
-
-count = 0
+order = {}
+line_item = {}
+result = {}
 for line in sys.stdin:
-    # remove leading and trailing whitespace
-    line = line.strip()
+    # print(line)
+    value = line.strip().split(" ", 1)
 
-    # parse the input we got from mapper.py
-    key, value = line.split("\t", 1)
-    new_val = value.split(", ")
-    create(key, new_val)
+    record = eval(value[1])
 
+    if (record[0] == "order"):
+        order[value[0]] = record
+    elif (record[0] == "line_item"):
+        if (value[0] in line_item):
+            line_item[value[0]].append(record)
+        else:
+            line_item[value[0]] = [record]
 
-final_list(order, line_item)
-
+i = 1
+for key in line_item:
+    for value in line_item[key]:
+        result[i] = order[key] + value
+        i += 1
     
+for keys in result:
+    print result[keys]

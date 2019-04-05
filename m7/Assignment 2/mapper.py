@@ -1,15 +1,10 @@
 #!/usr/bin/env python
-"""mapper.py"""
-
 import sys
+import json
 
-# input comes from STDIN (standard input)
+def mapper(record):
+	print record[0], record[1]
+
 for line in sys.stdin:
-    # remove leading and trailing whitespace
-    line = line.strip()
-    # split the line into words
-    words = line.split(", ")
-    words[0] = words[0].strip("[")
-    words[0] = words[0].strip("\"")
-    # increase counters
-    print '%s\t%s' % (words[0], 1)
+	record = json.loads(line)
+	mapper(record)

@@ -1,42 +1,13 @@
 #!/usr/bin/env python
-"""reducer.py"""
-
-from operator import itemgetter
 import sys
-
-current_word = None
-current_count = 0
-word = None
-
-# input comes from STDIN
+ 
+result = {}
 for line in sys.stdin:
-    # remove leading and trailing whitespace
-    line = line.strip()
-
-    # parse the input we got from mapper.py
-    word, count = line.split('\t', 1)
-
-    # convert count (currently a string) to int
-    try:
-        count = int(count)
-    except ValueError:
-        # count was not a number, so silently
-        # ignore/discard this line
-        continue
-
-    # this IF-switch only works because Hadoop sorts map output
-    # by key (here: word) before it is passed to the reducer
-    if current_word == word:
-        current_count += count
+    value = line.strip().split()
+    if (value[0] in result): 
+        result[value[0]].append(value[1])
     else:
-        if current_word:
-            # write result to STDOUT
-            temp = [current_word, current_count]
-            print '%s' %(temp)
-        current_count = count
-        current_word = word
+        result[value[0]] = [value[1]]
 
-# do not forget to output the last word if needed!
-if current_word == word:
-    final_temp = [current_word, current_count]
-    print '%s' % (final_temp)
+for keys in result:
+    print keys, len(result[keys])
