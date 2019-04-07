@@ -50,4 +50,4 @@ for i in li:
 for k in friends_dict.keys():
     for l in friends_dict[k]:
         print [l, k]
-        print [k ,l]            
+        print [k ,l]      
