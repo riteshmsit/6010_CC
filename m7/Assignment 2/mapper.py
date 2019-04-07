@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-import sys
-import json
+"""mapper.py"""
 
-def mapper(record):
-	print record[0], record[1]
+import sys
 
 for line in sys.stdin:
-	record = json.loads(line)
-	mapper(record)
+	line = line.strip()
+	line = line.strip("[")
+	line = line.strip("]")
+	line = line.replace("\"","")
+	data = line.split(", ", 1)
+	print '%s\t%s' % (data[0], 1)
