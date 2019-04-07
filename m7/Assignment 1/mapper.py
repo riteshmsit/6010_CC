@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-"""mapper.py"""
-
-import json
 import sys
+import json
 
-# input comes from STDIN (standard input)
+intermediate = {}
+def mapper(record):
+
+	order_id = record[1]
+	intermediate.setdefault(order_id, [])
+	intermediate[order_id] = record
+	print order_id, intermediate[order_id]
+
 for line in sys.stdin:
-    # remove leading and trailing whitespace
-    line = json.loads(line.decode("utf-8"))
-    check = line[0].strip()
-    key = line[1].strip()
-    print '%s%s' %(check+"\t", line)
-        
+	record = json.loads(line)
+	mapper(record)
